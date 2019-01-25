@@ -1,0 +1,25 @@
+{
+  "name": "fictizia-advancedjs-wschat",
+  "version": "1.0.0",
+  "description": "\"Ejercicio de implementación de Websockets\"",
+  "main": "server.js",
+  "dependencies": {
+    "json-server": "^0.14.2",
+    "ws": "^6.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TuckerDS/fictizia-advancedJS-WSchat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TuckerDS/fictizia-advancedJS-WSchat/issues"
+  },
+  "homepage": "https://github.com/TuckerDS/fictizia-advancedJS-WSchat#readme"
+}
