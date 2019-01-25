@@ -1,5 +1,5 @@
 var Server = require('ws').Server;
-var port = process.env.PORT || 3001;
+var port = process.env.PORT || 443;
 var ws = new Server({ port: port });
 var clients = [];
 
