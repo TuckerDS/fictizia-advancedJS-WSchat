@@ -33,7 +33,7 @@ var connection, btnSend, txtDisplay, id
   window.onload = "onReady()";
 
   //var onReady = function() {
-  connection = new WebSocket('ws://fictizia-ws-chat.herokuapp.com');
+  connection = new WebSocket('wss://fictizia-ws-chat.herokuapp.com');
   btnSend = document.getElementById('send')
   console.log(btnSend)
   txtDisplay = document.getElementById('chatbox')
