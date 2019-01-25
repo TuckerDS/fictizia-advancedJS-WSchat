@@ -42,7 +42,7 @@ body {
 }
 
 #controls {
-       box-sizing: border-box;
+    box-sizing: border-box;
     padding: 20px 10px;
     height: 30%;
     width: 100%;
