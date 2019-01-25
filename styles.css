@@ -1,0 +1,53 @@
+.left {
+    float:left;
+}
+
+.textbox {
+    padding: 10px;
+    width: 300px;
+    font-family:Verdana;
+}
+
+.button {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 10px;
+    width: 50px;
+    text-align: center;
+    font-family: verdana;
+    font-size: 12px;
+    background: #888;
+    color: #FFF;
+    margin-left: 10px;
+    cursor:pointer;
+}
+
+.chatbox {
+    height:500px; 
+    width:400px;
+    overflow:scroll;
+}
+
+.chatbox p {
+    font-family: Verdana;
+    font-size:12px;
+}
+
+.nick {
+
+}
+
+.mensaje {
+    margin-left:10px;
+}
+
+.hora {
+    margin-left:10px;
+    float:right;
+}
+
+.div_mensaje {
+    overflow:auto;
+    border-bottom: 1px solid #777;
+}

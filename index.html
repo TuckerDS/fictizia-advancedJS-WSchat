@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div>
+  <div>
+    <div id="chatbox" class="chatbox" style="height:500px; overflow:scroll;">
+      <div class="div_mensaje">
+        <p class="left nick">[Nick]:</p>
+        <p class="left mensaje">[Mensaje]</p>
+        <p class="left hora">[12:31]</p>
+      </div>
+    </div>
+    <div style="overflow:auto;">
+      <div class="left"><input id="texto" type="text" class="textbox" value=""></div>
+      <div class="left">
+        <div class="button" id="send">Enviar</div>
+      </div>
+    </div>
+    <div></div>
+  </div>
+</body>
+
+
+<script>
+var connection, btnSend, txtDisplay, id
+  window.onload = "onReady()";
+
+  //var onReady = function() {
+  connection = new WebSocket('ws://10.145.5.203:3001');
+  btnSend = document.getElementById('send')
+  console.log(btnSend)
+  txtDisplay = document.getElementById('chatbox')
+  connection.onopen = function (e) {
+    console.log("OPEN", e)
+  };
+ 
+  // Log errors
+  connection.onerror = function (error) {
+    console.error('WebSocket Error ' + error);
+  };
+
+  // Log messages from the server
+  connection.onmessage = function (e) {
+    var msg = JSON.parse(e.data)
+    var type = msg.type
+    var date = msg.date
+    var nick = msg.id
+    var text = msg.text
+
+    if (type=='HELO') id = nick;
+    else {
+      txtDisplay.innerHTML += 
+        '<div class="div_mensaje">' + 
+        '<p class="left nick">['+nick+']:</p>' +
+        '<p class="left mensaje">['+text+']</p>' +
+        '<p class="left hora">['+date+']</p>' +
+        '</div>'
+    }   
+  };
+
+  btnSend.addEventListener("click", function () {
+    var text = document.getElementById("texto").value
+    var now = new Date();
+    var msg = JSON.stringify({id:id, text:text, date: now.getHours() + ":" + now.getMinutes()})
+    connection.send(msg)
+  });
+  //}
+</script>
+</html>
+
