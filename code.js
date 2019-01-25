@@ -1,10 +1,11 @@
-var connection, btnSend, txtMsg, txtDisplay, cbxShuffle, id
+var connection, btnSend, txtMsg, txtDisplay, cbxShuffle, chatbox, id
 
 window.onload = function () {
   btnSend = document.getElementById('send')
   txtDisplay = document.getElementById('chatbox')
   cbxShuffle = document.getElementById('shuffle')
   txtMsg = document.getElementById('texto')
+  chatbox = document.getElementById("chatbox")
 
   btnSend.addEventListener("click", send);
   txtMsg.addEventListener("keypress", function (e) {
@@ -34,7 +35,7 @@ var receive = function (e) {
     txtDisplay.innerHTML +=
       '<div class="div_mensaje">' +
       '<p class="left nick">[' + nick + ']:</p>' +
-      '<p class="left mensaje">[' + text + ']</p>' +
+      '<p class="left mensaje">' + text + '</p>' +
       '<p class="left hora">[' + date + ']</p>' +
       '</div>'
   }
@@ -53,6 +54,8 @@ var send = function () {
 
   connection.send(JSON.stringify(msg))
   input.value = ""
+  
+  chatbox.scrollTop = chatbox.scrollHeight
 }
 
 var shuffle = function (msg) {

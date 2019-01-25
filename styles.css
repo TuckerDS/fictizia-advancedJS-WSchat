@@ -1,11 +1,20 @@
+body {
+    font-family:Verdana;
+}
+
 .left {
     float:left;
+    padding: 5px;
 }
 
 .textbox {
     padding: 10px;
     width: 300px;
-    font-family:Verdana;
+    
+    border: 1px solid #888;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 
 .button {
@@ -24,9 +33,21 @@
 }
 
 .chatbox {
-    height:500px; 
-    width:400px;
+    box-sizing: border-box;
+    padding: 30px;
+    height:70%; 
+    width:100%;
+    max-width: 600px;
     overflow:scroll;
+}
+
+#controls {
+       box-sizing: border-box;
+    padding: 20px 10px;
+    height: 30%;
+    width: 100%;
+    max-width: 600px;
+    overflow: scroll;
 }
 
 .chatbox p {
@@ -50,4 +71,14 @@
 .div_mensaje {
     overflow:auto;
     border-bottom: 1px solid #777;
+}
+
+.div_mensaje:first-of-type {
+    font-weight: bold;
+}
+
+@media (min-width: 600px) {
+    .chatbox, #controls {
+        margin: 0 auto;
+    }
 }
