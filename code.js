@@ -35,8 +35,10 @@ var receive = function (e) {
   var text = msg.text
 
   if (type == 'HELO') id = nick;
-  else if (type == 'LIST') document.getElementById("counter").innerHTML = msg.list.length
-  else {
+  else if (type == 'LIST') {
+    document.getElementById("counter").innerHTML = msg.list.length;
+    updateList(msg.list)
+  } else {
     txtDisplay.innerHTML +=
       '<div class="div_mensaje">' +
       '<p class="left nick">[' + nick + ']:</p>' +
@@ -80,4 +82,13 @@ var shuffle = function (msg) {
     result += (" ");
   }
   return result;
+}
+
+var updateList = function (list) {
+  console.log("LIT", list)
+  var content = ''
+  for (i=0; i < list.length; i++) {
+    content += '<option value="'+ list[i].nick +'">'+list[i].nick+'</option>'
+  }
+  document.getElementById("list").innerHTML = content;
 }
