@@ -6,18 +6,22 @@ window.onload = function () {
   cbxShuffle = document.getElementById('shuffle')
   txtMsg = document.getElementById('texto')
   chatbox = document.getElementById("chatbox")
+  nickBox = document.getElementById("nickname")
 
   btnSend.addEventListener("click", send);
   txtMsg.addEventListener("keypress", function (e) {
     if (e.keyCode == 13) send()
   })
+  nickBox.addEventListener("change", function () {
+     connection.send(JSON.stringify({type: "NICK", nick: this.value}))
+  });
 
   connect();
 }
 
 var connect = function () {
   connection = new WebSocket('wss://fictizia-ws-chat.herokuapp.com');
-  connection.onopen = function (e) { console.log("OPEN", e) };
+  connection.onopen = function (e) { console.log("OPEN", e); connection.send(JSON.stringify({type: "NICK", nick: this.value}))};
   connection.onclose = function (e) { console.log("conexion close"); connect() };
   connection.onerror = function (error) { console.error('WebSocket Error ' + error); };
   connection.onmessage = function (e) { receive(e)};
@@ -27,7 +31,7 @@ var receive = function (e) {
   var msg = JSON.parse(e.data)
   var type = msg.type
   var date = msg.date
-  var nick = msg.id
+  var nick = msg.nick || msg.id
   var text = msg.text
 
   if (type == 'HELO') id = nick;
@@ -49,6 +53,7 @@ var send = function () {
   var input = document.getElementById("texto")
   var msg = {
     id: id,
+    nick: nick.value,
     text: input.value,
     date: now.getHours() + ":" + now.getMinutes()
   }

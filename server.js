@@ -9,12 +9,18 @@ ws.on('connection', function (w, req) {
   console.log("NEW CONN:", id)
   clients.push({
     id: id,
-    con: w
+    con: w, 
+    nick: 'Anon'
   })
   
   w.on('message', function (msg) {
-    console.log('message from client', JSON.parse(msg));
-    sendBroadcast(msg)
+    var parsedMsg = JSON.parse(msg)
+    console.log('message from client', parsedMsg);
+    if (parsedMsg.type == "NICK") {
+      clients.find(function (e) { return e.id == id }).nick = parsedMsg.nick
+      sendBroadcast(JSON.stringify({type: "LIST", list: clients}))
+    } else sendBroadcast(msg)
+  
   });
 
   w.on('close', function () {
