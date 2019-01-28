@@ -21,7 +21,7 @@ window.onload = function () {
 
 var connect = function () {
   connection = new WebSocket('wss://fictizia-ws-chat.herokuapp.com');
-  connection.onopen = function (e) { console.log("OPEN", e); connection.send(JSON.stringify({type: "NICK", nick: this.value}))};
+  connection.onopen = function (e) { console.log("OPEN", e); if (nickBox.value != '') connection.send(JSON.stringify({ type: "NICK", nick: nickBox.value}))};
   connection.onclose = function (e) { console.log("conexion close"); connect() };
   connection.onerror = function (error) { console.error('WebSocket Error ' + error); };
   connection.onmessage = function (e) { receive(e)};
@@ -35,10 +35,8 @@ var receive = function (e) {
   var text = msg.text
 
   if (type == 'HELO') id = nick;
-  else if (type == 'LIST') {
-    var list = msg.list
-    document.getElementById("counter").innerHTML = list.length
-  } else {
+  else if (type == 'LIST') document.getElementById("counter").innerHTML = msg.list.length
+  else {
     txtDisplay.innerHTML +=
       '<div class="div_mensaje">' +
       '<p class="left nick">[' + nick + ']:</p>' +
@@ -53,7 +51,7 @@ var send = function () {
   var input = document.getElementById("texto")
   var msg = {
     id: id,
-    nick: nick.value,
+    nick: nickBox.value || 'Anon' ,
     text: input.value,
     date: now.getHours() + ":" + now.getMinutes()
   }

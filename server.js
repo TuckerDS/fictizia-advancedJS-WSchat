@@ -20,13 +20,13 @@ ws.on('connection', function (w, req) {
       clients.find(function (e) { return e.id == id }).nick = parsedMsg.nick
       sendBroadcast(JSON.stringify({type: "LIST", list: clients}))
     } else sendBroadcast(msg)
-  
   });
 
   w.on('close', function () {
     console.log('CLOSE CONN', id);
     removeClient(id)
   });
+
   w.send(JSON.stringify({id:id, type:"HELO"}));
   sendBroadcast(JSON.stringify({type: "LIST", list: clients}))
 });
