@@ -13,6 +13,9 @@
 
 <body>
   <div id="content">
+    <div id="info" class="info"">
+      <span id="counter"></span><span> Users</span>
+    </div>
     <div id="chatbox" class="chatbox" style="height:500px; overflow:scroll;">
       <div class="div_mensaje">
         <p class="left nick">[Nick]:</p>
@@ -21,7 +24,12 @@
       </div>
     </div>
     <div id="controls" style="overflow:auto;">
-      <label><input type="checkbox" id="shuffle"> Shuffle </label><br>
+        <div class="left">
+        <input type="text" id="nickname" placeholder="Your nick">
+        <label><input type="checkbox" id="shuffle">Shuffle </label>
+      </div>
+      
+      <br>
       <div class="left"><input id="texto" type="text" class="textbox" value=""></div>
       <div class="left">
         <div class="button" id="send">Enviar</div>

@@ -22,6 +22,7 @@ ws.on('connection', function (w, req) {
     removeClient(id)
   });
   w.send(JSON.stringify({id:id, type:"HELO"}));
+  sendBroadcast(JSON.stringify({type: "LIST", list: clients}))
 });
 
 var removeClient = function (id) {
@@ -32,6 +33,7 @@ var removeClient = function (id) {
     }
   }
   clients = newArray
+  sendBroadcast(JSON.stringify({type: "LIST", list: clients}))
 }
 
 var sendBroadcast = function (msg) {

@@ -26,21 +26,23 @@ body {
     padding: 5px;
 }
 
-.textbox {
-    padding: 10px;
-    width: 300px;
-    
+input[type="text"] {
     border: 1px solid #888;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    padding: 5px;
+}
+
+.textbox {
+    width: 300px;
 }
 
 .button {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    padding: 10px;
+    padding: 5px;
     width: 50px;
     text-align: center;
     font-family: verdana;
@@ -56,6 +58,12 @@ body {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+}
+
+.info {
+    padding: 5px 30px;
+    font-family: Verdana;
+    font-size:12px;
 }
 
 .chatbox {
@@ -107,4 +115,10 @@ body {
     .chatbox, #controls {
         margin: 0 auto;
     }
+}
+
+@media (max-width: 400px) {
+ .textbox {
+     width: 220px;
+ }
 }

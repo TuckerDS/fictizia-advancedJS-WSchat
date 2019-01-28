@@ -31,7 +31,10 @@ var receive = function (e) {
   var text = msg.text
 
   if (type == 'HELO') id = nick;
-  else {
+  else if (type == 'LIST') {
+    var list = msg.list
+    document.getElementById("counter").innerHTML = list.length
+  } else {
     txtDisplay.innerHTML +=
       '<div class="div_mensaje">' +
       '<p class="left nick">[' + nick + ']:</p>' +
