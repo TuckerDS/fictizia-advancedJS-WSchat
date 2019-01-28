@@ -50,18 +50,17 @@ var receive = function (e) {
 
 var send = function () {
   var now = new Date();
-  var input = document.getElementById("texto")
   var msg = {
     id: id,
     nick: nickBox.value || 'Anon' ,
-    text: input.value,
+    text: txtMsg.value,
     date: now.getHours() + ":" + now.getMinutes()
   }
 
   if (cbxShuffle.checked) msg.text = shuffle(msg.text);
 
   connection.send(JSON.stringify(msg))
-  input.value = ""
+  txtMsg.value = ""
   
   chatbox.scrollTop = chatbox.scrollHeight
 }
@@ -85,7 +84,6 @@ var shuffle = function (msg) {
 }
 
 var updateList = function (list) {
-  console.log("LIT", list)
   var content = ''
   for (i=0; i < list.length; i++) {
     content += '<option value="'+ list[i].nick +'">'+list[i].nick+'</option>'
