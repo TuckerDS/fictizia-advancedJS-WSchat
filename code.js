@@ -70,7 +70,7 @@ var send = function () {
   }
 
   msg.type = list.options[list.selectedIndex].value == 'all' ? 'TEXT' : 'CHAT'
-  msg.from = list.options[list.selectedIndex].value == 'all' ? null : users.find(function (e) { return e.id == id }).id
+  msg.to = list.options[list.selectedIndex].value == 'all' ? null : users.find(function (e) { return e.id == id }).id
 
   console.log("selected", list.options[list.selectedIndex].value)
 
