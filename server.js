@@ -23,7 +23,8 @@ ws.on('connection', function (w, req) {
         sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
         break;
      case 'CHAT':
-        clients.find(function (e) { return e.id == parsedMsg.from }).con.send(msg)
+        var client = clients.find(function (e) { return e.id == parsedMsg.from })
+        sendMsg(client, msg)
         break;
       default:
         sendBroadcast(msg)
@@ -51,6 +52,9 @@ var removeClient = function (id) {
   sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
 }
 
+var sendMsg= function(client, msg) {
+  try {client.con.send(msg)} catch (e) {console.log('Error:', e)}
+}
 var sendBroadcast = function (msg) {
   for (i = 0; i < clients.length; i++) {
     try {clients[i].con.send(msg)} catch (e) {console.log('Error:', e)}

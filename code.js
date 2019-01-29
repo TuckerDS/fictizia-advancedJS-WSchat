@@ -100,11 +100,13 @@ var shuffle = function (msg) {
   return result;
 }
 
-var updateList = function (list) {
+var updateList = function (userlist) {
   var content = '<option value="all">Todos</option>'
-  users = list;
+  users = userlist;
+  console.log('users', users)
   for (i=0; i < list.length; i++) {
-    content += '<option value="'+ list[i].id +'" disabled>'+list[i].nick+'</option>'
+    console.log ("---",users[i])
+    content += '<option value="'+ users[i].id +'">'+users[i].nick+'</option>'
   }
   list.innerHTML = content;
 }
