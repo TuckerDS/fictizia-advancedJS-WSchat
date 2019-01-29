@@ -1,4 +1,4 @@
-var connection, btnSend, txtMsg, cbxShuffle, chatbox, id, users, intervalId;
+var connection, btnSend, txtMsg, cbxShuffle, chatbox, id, users, intervalId, selectedChat;
 
 window.onload = function () {
   users = []
@@ -17,16 +17,23 @@ window.onload = function () {
      connection.send(JSON.stringify({type: "NICK", nick: this.value}))
   });
 
+  list.addEventListener("change", function () { 
+    selectedChat = this.options[this.selectedIndex].value
+    console.log("SELECTED VALUE", selectedChat)
+  });
+
   connect();
 }
 
 var connect = function () {
+  clearInterval(intervalId)
   connection = new WebSocket('wss://fictizia-ws-chat.herokuapp.com');
   connection.onopen = function (e) { console.log("OPEN", e); if (nickBox.value != '') connection.send(JSON.stringify({ type: "NICK", nick: nickBox.value}))};
   connection.onclose = function (e) { console.log("conexion close"); connect() };
   connection.onerror = function (error) { console.error('WebSocket Error ' + error); };
   connection.onmessage = function (e) { receive(e)};
-  intervalId = setTimeout(function() {console.log('PING');connection.send(JSON.stringify({type:'PING'}))}, 30000);
+  intervalId = setInterval(function() {console.log('PING');connection.send(JSON.stringify({type:'PING'}))}, 30000);
+  
 }
 
 var receive = function (e) {
@@ -104,11 +111,14 @@ var shuffle = function (msg) {
 }
 
 var updateList = function (userlist) {
-  var content = '<option value="all">Todos</option>'
+  var selected = ""
+  var content = '<option value="all" '+ selected+'>Todos</option>'
+
   users = userlist;
   console.log('users', users)
   for (i = 0; i < users.length; i++) {
-    content += '<option value="'+ users[i].id +'">'+users[i].nick+'</option>'
+    selected = users[i].id == selectedChat ? 'selected' : '';
+    content += '<option value="'+ users[i].id +'" '+ selected+'>'+users[i].nick+'</option>'
   }
   list.innerHTML = content;
 }

@@ -3,7 +3,6 @@ var port = process.env.PORT || 443;
 var ws = new Server({ port: port });
 var clients = [];
 
-
 ws.on('connection', function (w, req) {
   var id = Date.now();
 
