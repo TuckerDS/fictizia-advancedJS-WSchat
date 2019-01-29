@@ -26,6 +26,8 @@ ws.on('connection', function (w, req) {
         var client = clients.find(function (e) { return e.id == parsedMsg.to })
         sendMsg(client, msg)
         break;
+     case 'PING':
+      break;
       default:
         sendBroadcast(msg)
         break;

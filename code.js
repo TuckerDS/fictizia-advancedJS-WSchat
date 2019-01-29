@@ -1,4 +1,4 @@
-var connection, btnSend, txtMsg, txtDisplay, cbxShuffle, chatbox, id, users
+var connection, btnSend, txtMsg, cbxShuffle, chatbox, id, users, intervalId;
 
 window.onload = function () {
   users = []
@@ -26,6 +26,7 @@ var connect = function () {
   connection.onclose = function (e) { console.log("conexion close"); connect() };
   connection.onerror = function (error) { console.error('WebSocket Error ' + error); };
   connection.onmessage = function (e) { receive(e)};
+  intervalId = setTimeout(function() {console.log('PING');connection.send(JSON.stringify({type:'PING'}))}, 30000);
 }
 
 var receive = function (e) {
@@ -49,10 +50,11 @@ var receive = function (e) {
         '</div>'
       break;
     case 'CHAT':
+    var toNick = users.find(function (e) { return e.id == msg.to }).nick
     chatbox.innerHTML +=
       '<div class="div_mensaje">' +
       '<p class="left nick">[' + msg.nick + ']:</p>' +
-      '<p class="left mensaje">(Private) ' + msg.content + '</p>' +
+      '<p class="left mensaje">(Private to ' + toNick + ') ' + msg.content + '</p>' +
       '<p class="left hora">[' + msg.date + ']</p>' +
       '</div>'
     break;
@@ -70,13 +72,14 @@ var send = function () {
   }
 
   msg.type = list.options[list.selectedIndex].value == 'all' ? 'TEXT' : 'CHAT'
-  msg.to = list.options[list.selectedIndex].value == 'all' ? null : users.find(function (e) { return e.id == id }).id
+  msg.to = list.options[list.selectedIndex].value == 'all' ? null : list.options[list.selectedIndex].value
 
   console.log("selected", list.options[list.selectedIndex].value)
 
   if (cbxShuffle.checked) msg.content = shuffle(msg.content);
 
   connection.send(JSON.stringify(msg))
+  if (msg.type == 'CHAT') receive({data:JSON.stringify(msg)})
   txtMsg.value = ""
   
   chatbox.scrollTop = chatbox.scrollHeight
