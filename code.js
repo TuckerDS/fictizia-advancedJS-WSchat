@@ -87,7 +87,7 @@ var shuffle = function (msg) {
 }
 
 var updateList = function (list) {
-  var content = '<option value="all" disabled>Todos</option>'
+  var content = '<option value="all">Todos</option>'
   for (i=0; i < list.length; i++) {
     content += '<option value="'+ list[i].nick +'" disabled>'+list[i].nick+'</option>'
   }
