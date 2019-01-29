@@ -53,6 +53,7 @@ var removeClient = function (id) {
 }
 
 var sendMsg= function(client, msg) {
+  console.log("SEND CHAT", client, msg)
   try {client.con.send(msg)} catch (e) {console.log('Error:', e)}
 }
 var sendBroadcast = function (msg) {

@@ -104,8 +104,7 @@ var updateList = function (userlist) {
   var content = '<option value="all">Todos</option>'
   users = userlist;
   console.log('users', users)
-  for (i=0; i < list.length; i++) {
-    console.log ("---",users[i])
+  for (i = 0; i < users.length; i++) {
     content += '<option value="'+ users[i].id +'">'+users[i].nick+'</option>'
   }
   list.innerHTML = content;
