@@ -13,20 +13,66 @@ html, body, div, span {
 }
 
 body {
+    height: 100vh;
+    width: 100%;
 	line-height: 1;
 }
 /* END RESET */
 
 body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
 }
+
+#content {
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    max-width: 600px;
+}
+
+#info {
+    position: relative;
+    width: 100%;
+    padding: 5px 0 5px 30px;
+    font-weight: bold;
+}
+
+#chatbox {
+    position: relative;
+    box-sizing: border-box;
+    height: 85vh;
+    width: 100%;
+}
+
+#msgbox {
+    position: relative;
+    box-sizing: border-box;
+    height: 75vh;
+    overflow: scroll;
+}
+
+#controls {
+    position: relative;
+    box-sizing: border-box;
+    padding: 20px 10px;
+    height: 15vh;
+    width: 100%;
+    overflow: scroll;
+}
+
+#controls div{
+    margin-bottom: 5px;
+}
+
 
 .left {
-    float:left;
-    padding: 5px;
+    float: left;
 }
 
-input[type="text"], #list {
+input, #list {
     border: 1px solid #888;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -38,64 +84,23 @@ input[type="text"], #list {
     margin-left: 10px;
     width: 300px;
 }
+
 .textbox {
     width: 300px;
 }
 
 .button {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     padding: 5px;
     width: 50px;
     text-align: center;
-    font-family: verdana;
-    font-size: 12px;
     background: #888;
     color: #FFF;
     margin-left: 10px;
     cursor:pointer;
 }
 
-#content {
-    padding: 5px;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-}
-
-.info {
-    padding: 5px 30px;
-    font-family: Verdana;
-    font-size:12px;
-}
-
-.chatbox {
-    box-sizing: border-box;
-    padding: 5px 30px;
-    height:70%; 
-    width:100%;
-    max-width: 600px;
-    overflow:scroll;
-}
-
-#controls {
-    box-sizing: border-box;
-    padding: 20px 10px;
-    height: 20%;
-    width: 100%;
-    max-width: 600px;
-    overflow: scroll;
-}
-
-.chatbox p {
-    font-family: Verdana;
-    font-size:12px;
-}
-
-.nick {
-
-}
+.nick {}
 
 .mensaje {
     margin-left:10px;
@@ -111,18 +116,34 @@ input[type="text"], #list {
     border-bottom: 1px solid #777;
 }
 
-.div_mensaje:first-of-type {
+#title {
     font-weight: bold;
 }
 
-@media (min-width: 600px) {
-    .chatbox, #controls {
-        margin: 0 auto;
-    }
+
+#menu {
+    font-size: 32px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
 }
 
-@media (max-width: 400px) {
- .textbox, #list {
-     width: 220px;
- }
+
+/*Tablet*/
+@media (min-width: 768px) and (max-width:1024px) {
+
+}
+
+/* Mobile */
+@media (max-width:767px) and (orientation: landscape) {}
+
+@media (max-width:420px) and (orientation: portrait) {
+    #content {
+       padding: 0 5px;
+    }
+    .textbox,
+    #list {
+        width: 220px;
+    }
 }

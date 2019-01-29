@@ -1,41 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="language" content="Spanish">
   <meta http-equiv="content-language" content="es">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, height=device-height,,initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>WSchat</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
   <div id="content">
-    <div id="info" class="info"">
-    <span id="counter"></span><span> Users</span><select id="list"></select>
-    </div>
-    <div id="chatbox" class="chatbox" style="height:500px; overflow:scroll;">
-      <div class="div_mensaje">
+    <div id="chatbox" class="chatbox">
+      <div id="info" class="info">
+        <span id="counter"></span>
+        <span> Users</span>
+        <select id="list"></select>
+      </div>
+
+      <div id="title" class="div_mensaje">
         <p class="left nick">[Nick]:</p>
         <p class="left mensaje">[Mensaje]</p>
         <p class="left hora">[Time]</p>
       </div>
+      
+      <div id="msgbox" class="msgbox"></div>
     </div>
     <div id="controls" style="overflow:auto;">
-        <div class="left">
+      <div class="left">
         <input type="text" id="nickname" placeholder="Your nick">
         <label><input type="checkbox" id="shuffle">Shuffle </label>
       </div>
-      
-      <br>
       <div class="left"><input id="texto" type="text" class="textbox" value=""></div>
-      <div class="left">
-        <div class="button" id="send">Enviar</div>
-      </div>
+      <div class="left"><div class="button" id="send">Enviar</div></div>
     </div>
   </div>
+
+
+  
 </body>
 
 <script src="code.js"></script>

@@ -2,10 +2,10 @@ var connection, btnSend, txtMsg, txtDisplay, cbxShuffle, chatbox, id
 
 window.onload = function () {
   btnSend = document.getElementById('send')
-  txtDisplay = document.getElementById('chatbox')
+  txtDisplay = document.getElementById('msgbox')
   cbxShuffle = document.getElementById('shuffle')
   txtMsg = document.getElementById('texto')
-  chatbox = document.getElementById("chatbox")
+  chatbox = document.getElementById("msgbox")
   nickBox = document.getElementById("nickname")
 
   btnSend.addEventListener("click", send);
