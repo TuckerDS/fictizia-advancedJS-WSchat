@@ -28,6 +28,7 @@ var connect = function () {
 
 var receive = function (e) {
   var msg = JSON.parse(e.data)
+  console.log(msg.type, msg)
 
   switch (msg.type) {
     case 'HELO':
