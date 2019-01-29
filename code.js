@@ -55,11 +55,11 @@ var send = function () {
     id: id,
     type: "TEXT",
     nick: nickBox.value || 'Anon' ,
-    text: txtMsg.value,
+    content: txtMsg.value,
     date: now.getHours() + ":" + now.getMinutes()
   }
 
-  if (cbxShuffle.checked) msg.text = shuffle(msg.text);
+  if (cbxShuffle.checked) msg.content = shuffle(msg.content);
 
   connection.send(JSON.stringify(msg))
   txtMsg.value = ""
