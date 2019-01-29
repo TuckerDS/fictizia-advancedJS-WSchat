@@ -22,6 +22,9 @@ ws.on('connection', function (w, req) {
         clients.find(function (e) { return e.id == id }).nick = parsedMsg.nick
         sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
         break;
+     case 'CHAT':
+        clients.find(function (e) { return e.id == parsedMsg.from }).con.send(msg)
+        break;
       default:
         sendBroadcast(msg)
         break;

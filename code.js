@@ -1,11 +1,13 @@
-var connection, btnSend, txtMsg, txtDisplay, cbxShuffle, chatbox, id
+var connection, btnSend, txtMsg, txtDisplay, cbxShuffle, chatbox, id, users
 
 window.onload = function () {
+  users = []
   btnSend = document.getElementById('send')
   cbxShuffle = document.getElementById('shuffle')
   txtMsg = document.getElementById('texto')
   chatbox = document.getElementById("msgbox")
   nickBox = document.getElementById("nickname")
+  list = document.getElementById("list")
 
   btnSend.addEventListener("click", send);
   txtMsg.addEventListener("keypress", function (e) {
@@ -46,6 +48,14 @@ var receive = function (e) {
         '<p class="left hora">[' + msg.date + ']</p>' +
         '</div>'
       break;
+    case 'CHAT':
+    chatbox.innerHTML +=
+      '<div class="div_mensaje">' +
+      '<p class="left nick">[' + msg.nick + ']:</p>' +
+      '<p class="left mensaje">(Private) ' + msg.content + '</p>' +
+      '<p class="left hora">[' + msg.date + ']</p>' +
+      '</div>'
+    break;
     default: break;
   }
 }
@@ -54,11 +64,15 @@ var send = function () {
   var now = new Date();
   var msg = {
     id: id,
-    type: "TEXT",
     nick: nickBox.value || 'Anon' ,
     content: txtMsg.value,
     date: now.getHours() + ":" + now.getMinutes()
   }
+
+  msg.type = list.options[list.selectedIndex].value == 'all' ? 'TEXT' : 'CHAT'
+  msg.from = list.options[list.selectedIndex].value == 'all' ? null : users.find(function (e) { return e.id == id }).id
+
+  console.log("selected", list.options[list.selectedIndex].value)
 
   if (cbxShuffle.checked) msg.content = shuffle(msg.content);
 
@@ -88,8 +102,9 @@ var shuffle = function (msg) {
 
 var updateList = function (list) {
   var content = '<option value="all">Todos</option>'
+  users = list;
   for (i=0; i < list.length; i++) {
-    content += '<option value="'+ list[i].nick +'" disabled>'+list[i].nick+'</option>'
+    content += '<option value="'+ list[i].id +'" disabled>'+list[i].nick+'</option>'
   }
-  document.getElementById("list").innerHTML = content;
+  list.innerHTML = content;
 }
