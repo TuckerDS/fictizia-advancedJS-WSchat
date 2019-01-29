@@ -39,15 +39,11 @@ var removeClient = function (id) {
     }
   }
   clients = newArray
-  sendBroadcast(JSON.stringify({
-    type: "LIST",
-    list: newArray
-  }))
+  sendBroadcast(JSON.stringify({type: "LIST", list: newArray}))
 }
 
 var sendBroadcast = function (msg) {
   for (i = 0; i < clients.length; i++) {
-    
-    clients[i].con.send(msg)
+    try {clients[i].con.send(msg)} catch (e) {console.log('Error:', e)}
   }
 }
