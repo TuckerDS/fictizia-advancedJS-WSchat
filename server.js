@@ -3,6 +3,7 @@ var port = process.env.PORT || 443;
 var ws = new Server({ port: port });
 var clients = [];
 
+
 ws.on('connection', function (w, req) {
   var id = Date.now();
 
@@ -14,12 +15,17 @@ ws.on('connection', function (w, req) {
   })
   
   w.on('message', function (msg) {
-    var parsedMsg = JSON.parse(msg)
+    var parsedMsg = JSON.parse(msg);
     console.log('message from client', parsedMsg);
-    if (parsedMsg.type == "NICK") {
-      clients.find(function (e) { return e.id == id }).nick = parsedMsg.nick
-      sendBroadcast(JSON.stringify({type: "LIST", list: clients}))
-    } else sendBroadcast(msg)
+    switch (parsedMsg.type) {
+      case 'NICK':
+        clients.find(function (e) { return e.id == id }).nick = parsedMsg.nick
+        sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
+        break;
+      default:
+        sendBroadcast(msg)
+        break;
+    }
   });
 
   w.on('close', function () {
@@ -28,7 +34,7 @@ ws.on('connection', function (w, req) {
   });
 
   w.send(JSON.stringify({id:id, type:"HELO"}));
-  sendBroadcast(JSON.stringify({type: "LIST", list: clients}))
+  sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
 });
 
 var removeClient = function (id) {
@@ -39,7 +45,7 @@ var removeClient = function (id) {
     }
   }
   clients = newArray
-  sendBroadcast(JSON.stringify({type: "LIST", list: newArray}))
+  sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
 }
 
 var sendBroadcast = function (msg) {

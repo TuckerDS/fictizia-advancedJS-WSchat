@@ -2,7 +2,6 @@ var connection, btnSend, txtMsg, txtDisplay, cbxShuffle, chatbox, id
 
 window.onload = function () {
   btnSend = document.getElementById('send')
-  txtDisplay = document.getElementById('msgbox')
   cbxShuffle = document.getElementById('shuffle')
   txtMsg = document.getElementById('texto')
   chatbox = document.getElementById("msgbox")
@@ -29,22 +28,24 @@ var connect = function () {
 
 var receive = function (e) {
   var msg = JSON.parse(e.data)
-  var type = msg.type
-  var date = msg.date
-  var nick = msg.nick || msg.id
-  var text = msg.text
 
-  if (type == 'HELO') id = nick;
-  else if (type == 'LIST') {
-    document.getElementById("counter").innerHTML = msg.list.length;
-    updateList(msg.list)
-  } else {
-    txtDisplay.innerHTML +=
-      '<div class="div_mensaje">' +
-      '<p class="left nick">[' + nick + ']:</p>' +
-      '<p class="left mensaje">' + text + '</p>' +
-      '<p class="left hora">[' + date + ']</p>' +
-      '</div>'
+  switch (msg.type) {
+    case 'HELO':
+      id = msg.nick || msg.id;
+      break;
+    case 'LIST':
+      document.getElementById("counter").innerHTML = msg.content.length;
+      updateList(msg.content);
+      break;
+    case 'TEXT':
+      chatbox.innerHTML +=
+        '<div class="div_mensaje">' +
+        '<p class="left nick">[' + msg.nick + ']:</p>' +
+        '<p class="left mensaje">' + msg.content + '</p>' +
+        '<p class="left hora">[' + msg.date + ']</p>' +
+        '</div>'
+      break;
+    default: break;
   }
 }
 
@@ -52,6 +53,7 @@ var send = function () {
   var now = new Date();
   var msg = {
     id: id,
+    type: "TEXT",
     nick: nickBox.value || 'Anon' ,
     text: txtMsg.value,
     date: now.getHours() + ":" + now.getMinutes()
@@ -86,7 +88,7 @@ var shuffle = function (msg) {
 var updateList = function (list) {
   var content = ''
   for (i=0; i < list.length; i++) {
-    content += '<option value="'+ list[i].nick +'">'+list[i].nick+'</option>'
+    content += '<option value="'+ list[i].nick +'" disabled>'+list[i].nick+'</option>'
   }
   document.getElementById("list").innerHTML = content;
 }
