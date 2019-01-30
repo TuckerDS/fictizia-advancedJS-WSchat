@@ -92,7 +92,7 @@ var shuffle = function (msg) {
   for (var i = 0; i < palabra.length; i++) {
     temp = palabra[i].split("");
     for (var j = palabra[i].length - 1; j >= 0; j--)
-      result += temp.pop(Math.floor(Math.random() * (j + 1)));
+      result += temp.splice(Math.floor(Math.random() * (j + 1)),1);
     result += (" ");
   }
   return result;
