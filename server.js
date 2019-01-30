@@ -18,7 +18,7 @@ ws.on('connection', function (w, req) {
         break;
       case 'CHAT':
         var client = clients.find(function (e) { return e.id == parsedMsg.to })
-        sendMsg([client], parsedMsg)
+        sendMsgs([client], parsedMsg)
         break;
       case 'TEXT':
         sendMsgs(clients, parsedMsg);
