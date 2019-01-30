@@ -1,4 +1,4 @@
-var connection, btnSend, txtMsg, cbxShuffle, chatbox, id, users, intervalId, selectedChat;
+var connection, btnSend, txtMsg, cbxShuffle, chatbox, id, users, counter, intervalId, selectedChat;
 
 window.onload = function () {
   users = []
@@ -8,6 +8,7 @@ window.onload = function () {
   chatbox = document.getElementById("msgbox")
   nickBox = document.getElementById("nickname")
   list = document.getElementById("list")
+  counter = document.getElementById("counter")
 
   btnSend.addEventListener("click", send);
   txtMsg.addEventListener("keypress", function (e) {
@@ -26,14 +27,13 @@ window.onload = function () {
 }
 
 var connect = function () {
-  clearInterval(intervalId)
+  clearInterval(intervalId);
   connection = new WebSocket('wss://fictizia-ws-chat.herokuapp.com');
   connection.onopen = function (e) { console.log("OPEN", e); if (nickBox.value != '') connection.send(JSON.stringify({ type: "NICK", nick: nickBox.value}))};
   connection.onclose = function (e) { console.log("conexion close"); connect() };
   connection.onerror = function (error) { console.error('WebSocket Error ' + error); };
   connection.onmessage = function (e) { receive(e)};
   intervalId = setInterval(function() {console.log('PING');connection.send(JSON.stringify({type:'PING'}))}, 30000);
-  
 }
 
 var receive = function (e) {
@@ -45,26 +45,16 @@ var receive = function (e) {
       id = msg.nick || msg.id;
       break;
     case 'LIST':
-      document.getElementById("counter").innerHTML = msg.content.length;
+      counter.innerHTML = msg.content.length;
       updateList(msg.content);
       break;
     case 'TEXT':
-      chatbox.innerHTML +=
-        '<div class="div_mensaje">' +
-        '<p class="left nick">[' + msg.nick + ']:</p>' +
-        '<p class="left mensaje">' + msg.content + '</p>' +
-        '<p class="left hora">[' + msg.date + ']</p>' +
-        '</div>'
+      addMsg(msg.nick, msg.content, msg.date )
       break;
     case 'CHAT':
-    var toNick = users.find(function (e) { return e.id == msg.to }).nick
-    chatbox.innerHTML +=
-      '<div class="div_mensaje">' +
-      '<p class="left nick">[' + msg.nick + ']:</p>' +
-      '<p class="left mensaje">(Private to ' + toNick + ') ' + msg.content + '</p>' +
-      '<p class="left hora">[' + msg.date + ']</p>' +
-      '</div>'
-    break;
+      var toNick = users.find(function (e) { return e.id == msg.to }).nick
+      addMsg(msg.nick, '(Private to '+toNick+') '+ msg.content, msg.date )
+      break;
     default: break;
   }
 }
@@ -80,8 +70,6 @@ var send = function () {
 
   msg.type = list.options[list.selectedIndex].value == 'all' ? 'TEXT' : 'CHAT'
   msg.to = list.options[list.selectedIndex].value == 'all' ? null : list.options[list.selectedIndex].value
-
-  console.log("selected", list.options[list.selectedIndex].value)
 
   if (cbxShuffle.checked) msg.content = shuffle(msg.content);
 
@@ -110,12 +98,19 @@ var shuffle = function (msg) {
   return result;
 }
 
+var addMsg = function(nick, content, date) {
+   chatbox.innerHTML +=
+      '<div class="div_mensaje">' +
+      '<p class="left nick">[' + nick + ']:</p>' +
+      '<p class="left mensaje">' + content + '</p>' +
+      '<p class="left hora">[' + date + ']</p>' +
+      '</div>'
+}
+
 var updateList = function (userlist) {
   var selected = ""
   var content = '<option value="all" '+ selected+'>Todos</option>'
-
   users = userlist;
-  console.log('users', users)
   for (i = 0; i < users.length; i++) {
     selected = users[i].id == selectedChat ? 'selected' : '';
     content += '<option value="'+ users[i].id +'" '+ selected+'>'+users[i].nick+'</option>'

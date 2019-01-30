@@ -5,60 +5,45 @@ var clients = [];
 
 ws.on('connection', function (w, req) {
   var id = Date.now();
-
+  clients.push({ 'id': id, 'con': w, 'nick': 'Anon'});
   console.log("NEW CONN:", id)
-  clients.push({
-    id: id,
-    con: w, 
-    nick: 'Anon'
-  })
   
   w.on('message', function (msg) {
     var parsedMsg = JSON.parse(msg);
-    console.log('message from client', parsedMsg);
+    console.log('NEW MSG:', parsedMsg);
     switch (parsedMsg.type) {
       case 'NICK':
         clients.find(function (e) { return e.id == id }).nick = parsedMsg.nick
-        sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
+        sendMsgs(clients, {type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})})
         break;
-     case 'CHAT':
+      case 'CHAT':
         var client = clients.find(function (e) { return e.id == parsedMsg.to })
-        sendMsg(client, msg)
+        sendMsg([client], parsedMsg)
         break;
-     case 'PING':
-      break;
-      default:
-        sendBroadcast(msg)
+      case 'TEXT':
+        sendMsgs(clients, parsedMsg);
         break;
+    default: break;
     }
   });
 
   w.on('close', function () {
-    console.log('CLOSE CONN', id);
+    console.log('CLOSE CONN:', id);
     removeClient(id)
   });
 
   w.send(JSON.stringify({id:id, type:"HELO"}));
-  sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
+  sendMsgs(clients, {type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})})
 });
 
 var removeClient = function (id) {
-  var newArray = []
-  for (i = 0; i < clients.length; i++) {
-    if (clients[i].id != id) {
-      newArray.push(clients[i])
-    }
-  }
+  var newArray = clients.filter(function(e){return e.id != id})
   clients = newArray
-  sendBroadcast(JSON.stringify({type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})}))
+  sendMsgs(clients, {type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})})
 }
 
-var sendMsg= function(client, msg) {
-  console.log("SEND CHAT FROM", msg, msg)
-  try {client.con.send(msg)} catch (e) {console.log('Error:', e)}
-}
-var sendBroadcast = function (msg) {
-  for (i = 0; i < clients.length; i++) {
-    try {clients[i].con.send(msg)} catch (e) {console.log('Error:', e)}
+var sendMsgs = function (recipients, msg) {
+  for (i = 0; i < recipients.length; i++) {
+    try {recipients[i].con.send(JSON.stringify(msg))} catch (e) {console.log('Error:', e)}
   }
 }
