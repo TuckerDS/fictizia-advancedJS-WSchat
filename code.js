@@ -89,7 +89,7 @@ var shuffle = function (msg) {
   //   result += (" ");
   // }
 
-  palabra.forEach(p=>{
+  palabra.split('').forEach(p=>{
     temp = p.split('');
     p.forEach((c, i) =>{
       result += temp.pop(Math.floor(Math.random() * (i + 1)));
