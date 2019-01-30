@@ -19,7 +19,7 @@ ws.on('connection', function (w, req) {
         break;
       case 'CHAT':
         var client = clients.find(e => e.id == parsedMsg.to)
-        sendMsg([client], parsedMsg)
+        sendMsgs([client], parsedMsg)
         break;
       case 'TEXT':
         sendMsgs(clients, parsedMsg);
