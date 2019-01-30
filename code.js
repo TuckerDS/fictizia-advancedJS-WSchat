@@ -14,7 +14,7 @@ window.onload = function () {
   btnSend.addEventListener('click', send);
   txtMsg.addEventListener('keypress', e => {if (e.keyCode == 13) send();});
   nickBox.addEventListener('change', () => connection.send(JSON.stringify({type: 'NICK', nick: this.value})));
-  list.addEventListener('change', () => selectedChat = this.options[this.selectedIndex].value);
+  list.addEventListener('change', function () {selectedChat = this.options[this.selectedIndex].value;});
 
   connect();
 };
@@ -26,7 +26,7 @@ var connect = function () {
   connection.onclose = (e) => { console.log('conexion close'); connect();};
   connection.onerror = (error) => { console.error(`WebSocket Error ${error}`); };
   connection.onmessage = e => receive(e);
-  intervalId = setInterval(() => {console.log('PING');connection.send(JSON.stringify({type:'PING'}))}, 30000);
+  intervalId = setInterval(() => {console.log('PING'); connection.send(JSON.stringify({type:'PING'}))}, 30000);
 };
 
 var receive = function (e) {
@@ -36,7 +36,7 @@ var receive = function (e) {
   var ACTIONS = {
     'HELO': () => id = msg.nick || msg.id,
     'TEXT': () => addMsg(msg.nick, msg.content, msg.date),
-    'CHAT': () => addMsg(msg.nick, `(Private to ${users.find(e => e.id == msg.to).nick}) msg.content`, msg.date),
+    'CHAT': () => addMsg(msg.nick, `(Private to ${users.find(e => e.id == msg.to).nick}) ${msg.content}`, msg.date),
     'LIST': () => {
       counter.innerHTML = msg.content.length;
       updateList(msg.content);
@@ -55,16 +55,14 @@ var send = function () {
     'date': `${now.getHours()}:${now.getMinutes()}`
   };
 
-  msg.type = list.options[list.selectedIndex].value == 'all' ? 'TEXT' : 'CHAT';
-  msg.to = list.options[list.selectedIndex].value == 'all' ? null : list.options[list.selectedIndex].value;
+  msg.type = selectedChat == 'all' ? 'TEXT' : 'CHAT';
+  msg.to = selectedChat == 'all' ? null : selectedChat;
 
   if (cbxShuffle.checked) msg.content = shuffle(msg.content);
-
-  connection.send(JSON.stringify(msg));
   if (msg.type == 'CHAT') receive({data:JSON.stringify(msg)});
   txtMsg.value = '';
-  
   chatbox.scrollTop = chatbox.scrollHeight;
+  connection.send(JSON.stringify(msg));
 }
 
 var shuffle = function (msg) {
