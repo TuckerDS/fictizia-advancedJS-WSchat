@@ -1,3 +1,4 @@
+/*jshint esversion: 6*/
 var Server = require('ws').Server;
 var port = process.env.PORT || 443;
 var ws = new Server({ port: port });
@@ -13,11 +14,11 @@ ws.on('connection', function (w, req) {
     console.log('NEW MSG:', parsedMsg);
     switch (parsedMsg.type) {
       case 'NICK':
-        clients.find(function (e) { return e.id == id }).nick = parsedMsg.nick
-        sendMsgs(clients, {type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})})
+        clients.find(e => e.id == id).nick = parsedMsg.nick
+        sendMsgs(clients, {type: "LIST", content: clients.map(e => { return {id: e.id, nick: e.nick} })})
         break;
       case 'CHAT':
-        var client = clients.find(function (e) { return e.id == parsedMsg.to })
+        var client = clients.find(e => e.id == parsedMsg.to)
         sendMsg([client], parsedMsg)
         break;
       case 'TEXT':
@@ -33,13 +34,13 @@ ws.on('connection', function (w, req) {
   });
 
   w.send(JSON.stringify({id:id, type:"HELO"}));
-  sendMsgs(clients, {type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})})
+  sendMsgs(clients, {type: "LIST", content: clients.map(e => {return {id: e.id, nick: e.nick}})})
 });
 
 var removeClient = function (id) {
-  var newArray = clients.filter(function(e){return e.id != id})
+  var newArray = clients.filter(e => e.id != id)
   clients = newArray
-  sendMsgs(clients, {type: "LIST", content: clients.map(function (e){return {id: e.id, nick: e.nick}})})
+  sendMsgs(clients, {type: "LIST", content: clients.map(e =>{return {id: e.id, nick: e.nick}})})
 }
 
 var sendMsgs = function (recipients, msg) {
