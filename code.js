@@ -54,9 +54,9 @@ var send = function () {
     'content': txtMsg.value,
     'date': `${now.getHours()}:${now.getMinutes()}`
   };
-
-  msg.type = selectedChat == 'all' ? 'TEXT' : 'CHAT';
-  msg.to = selectedChat == 'all' ? null : selectedChat;
+  var selectedUserValue = list.options[list.selectedIndex].value;
+  msg.type = selectedUserValue == 'all' ? 'TEXT' : 'CHAT';
+  msg.to = selectedUserValue == 'all' ? null : selectedUserValue;
 
   if (cbxShuffle.checked) msg.content = shuffle(msg.content);
   if (msg.type == 'CHAT') receive({data:JSON.stringify(msg)});
