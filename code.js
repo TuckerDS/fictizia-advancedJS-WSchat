@@ -33,24 +33,18 @@ var receive = function (e) {
   var msg = JSON.parse(e.data);
   console.log(msg.type, msg);
 
-  switch (msg.type) {
-    case 'HELO':
-      id = msg.nick || msg.id;
-      break;
-    case 'LIST':
+  var ACTIONS = {
+    'HELO': () => id = msg.nick || msg.id,
+    'TEXT': () => addMsg(msg.nick, msg.content, msg.date),
+    'CHAT': () => addMsg(msg.nick, `(Private to ${users.find(e => e.id == msg.to).nick}) msg.content`, msg.date),
+    'LIST': () => {
       counter.innerHTML = msg.content.length;
       updateList(msg.content);
-      break;
-    case 'TEXT':
-      addMsg(msg.nick, msg.content, msg.date );
-      break;
-    case 'CHAT':
-      var toNick = users.find(e => e.id == msg.to).nick;
-      addMsg(msg.nick, `(Private to ${toNick}) msg.content`, msg.date );
-      break;
-    default: break;
-  }
-}
+    }
+  };
+
+  if (ACTIONS[msg.type]) ACTIONS[msg.type]();
+};
 
 var send = function () {
   var now = new Date();
@@ -74,37 +68,18 @@ var send = function () {
 }
 
 var shuffle = function (msg) {
-  var str = msg;
-  var aux = str.split(' ');
-  var result, temp, palabra;
-  palabra = aux;
-
-  result = '';
-  str = msg.split(' ');
-  str = palabra;
-  // for (var i = 0; i < palabra.length; i++) {
-  //   temp = palabra[i].split("");
-  //   for (var j = palabra[i].length - 1; j >= 0; j--)
-  //     result += temp.splice(Math.floor(Math.random() * (j + 1)), 1);
-  //   result += (" ");
-  // }
-
-  palabra.split('').forEach(p=>{
-    temp = p.split('');
-    p.forEach((c, i) =>{
-      result += temp.pop(Math.floor(Math.random() * (i + 1)));
-    });
+  var res = [];
+  msg.split(' ').forEach(p => {
+    var chars = p.split('');
+    res = [...res, ...p.split('').map(() => chars.splice(Math.floor(Math.random() * (chars.length - 1)), 1)), ' '];
   });
-  
-  return result;
+  return res.join('');
 };
 
 var addMsg = function(nick, content, date) {
    chatbox.innerHTML +=
       `<div class="div_mensaje">
-      <p class="left nick">[${nick}]:</p>
-      <p class="left mensaje">${content}</p>
-      <p class="left hora">[${date}]</p>
+      <p class="left nick">[${nick}]:</p><p class="left mensaje">${content}</p><p class="left hora">[${date}]</p>
       </div>`;
 };
 
