@@ -4,7 +4,7 @@ var ws = new Server({ port: port });
 var clients = [];
 
 ws.on('connection', function (w, req) {
-  var id = Date.now();
+  var id = Symbol();
   clients.push({ 'id': id, 'con': w, 'nick': 'Anon'});
   console.log("NEW CONN:", id)
   
