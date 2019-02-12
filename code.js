@@ -13,7 +13,7 @@ window.onload = function () {
 
   btnSend.addEventListener('click', send);
   txtMsg.addEventListener('keypress', e => {if (e.keyCode == 13) send();});
-  nickBox.addEventListener('change', () => connection.send(JSON.stringify({type: 'NICK', nick: this.value})));
+  nickBox.addEventListener('change', () => connection.send(JSON.stringify({type: 'NICK', nick: nickBox.value})));
   list.addEventListener('change', function () {selectedChat = this.options[this.selectedIndex].value;});
 
   connect();
