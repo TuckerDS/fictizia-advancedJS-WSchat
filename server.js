@@ -24,6 +24,9 @@ ws.on('connection', function (w, req) {
       case 'TEXT':
         sendMsgs(clients, parsedMsg);
         break;
+      case 'PING':
+        w.send(JSON.stringify({id:id, type:"PONG"}));
+        break;
     default: break;
     }
   });
