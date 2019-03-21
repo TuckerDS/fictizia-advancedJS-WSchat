@@ -34,6 +34,7 @@ body {
 }
 
 #info {
+    box-sizing: border-box;
     position: relative;
     width: 100%;
     padding: 5px 0 5px 30px;
@@ -41,13 +42,15 @@ body {
 }
 
 #chatbox {
+    box-sizing: border-box;
     position: relative;
     box-sizing: border-box;
-    height: 85vh;
+    height: 80vh;
     width: 100%;
 }
 
 #msgbox {
+    box-sizing: border-box;
     position: relative;
     box-sizing: border-box;
     height: 75vh;
@@ -55,10 +58,11 @@ body {
 }
 
 #controls {
+    box-sizing: border-box;
     position: relative;
     box-sizing: border-box;
     padding: 20px 10px;
-    height: 15vh;
+    height: 20vh;
     width: 100%;
 }
 
@@ -85,13 +89,13 @@ input, #list {
 }
 
 .textbox {
-    width: 300px;
+    width: 100%;
 }
 
 .button {
     border-radius: 3px;
     padding: 5px;
-    width: 50px;
+    width: 20;
     text-align: center;
     background: #888;
     color: #FFF;
@@ -144,5 +148,12 @@ input, #list {
     .textbox,
     #list {
         width: 220px;
+    }
+    .button {
+        width: 20%;
+    }
+    #msgContainer {
+        box-sizing: border-box;
+        width: 80%;
     }
 }
