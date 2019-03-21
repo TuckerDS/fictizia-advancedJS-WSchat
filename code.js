@@ -2,6 +2,9 @@
 var connection, btnSend, txtMsg, cbxShuffle, chatbox, id, users, counter, intervalId, selectedChat;
 
 window.onload = function () {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+
   users = [];
   btnSend = document.getElementById('send');
   cbxShuffle = document.getElementById('shuffle');
