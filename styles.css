@@ -43,7 +43,6 @@ body {
 }
 
 #chatbox {
-    overflow: scroll;
     box-sizing: border-box;
     position: relative;
     box-sizing: border-box;
@@ -55,7 +54,7 @@ body {
     box-sizing: border-box;
     position: relative;
     box-sizing: border-box;
-    height: 75vh;
+    height: 70vh;
     overflow: scroll;
 }
 
