@@ -15,6 +15,10 @@ window.onload = function () {
   txtMsg.addEventListener('keypress', e => {if (e.keyCode == 13) send();});
   nickBox.addEventListener('change', () => connection.send(JSON.stringify({type: 'NICK', nick: nickBox.value})));
   list.addEventListener('change', function () {selectedChat = this.options[this.selectedIndex].value;});
+  window.addEventListener('resize', () => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  });
 
   connect();
 };
